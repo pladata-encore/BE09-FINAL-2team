@@ -394,7 +394,78 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 ## 🚀 배포
 
-### Docker 배포
+### GitHub Actions CI/CD (현재 사용 중)
+
+프로젝트는 GitHub Actions를 통한 자동 배포를 사용합니다:
+
+```yaml
+# .github/workflows/frontend-deploy.yml
+name: Frontend Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_WEBSOCKET_URL=${{ secrets.NEXT_PUBLIC_WEBSOCKET_URL }}" >> .env
+          echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_CHAT_API_URL=${{ secrets.NEXT_PUBLIC_CHAT_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_USER_API_URL=${{ secrets.NEXT_PUBLIC_USER_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_PRODUCT_API_URL=${{ secrets.NEXT_PUBLIC_PRODUCT_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_REVIEW_API_URL=${{ secrets.NEXT_PUBLIC_REVIEW_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_POST_API_URL=${{ secrets.NEXT_PUBLIC_POST_API_URL }}" >> .env
+
+      - name: Build, Tag, and Push Docker image
+        run: |
+          IMAGE_REPO=${{ steps.login-ecr.outputs.registry }}/momnect-frontend
+          IMAGE_TAG=latest
+          docker build -t $IMAGE_REPO:$IMAGE_TAG .
+          docker push $IMAGE_REPO:$IMAGE_TAG
+
+      - name: Prepare Dockerrun.aws.json
+        run: |
+          sed -i "s|<AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/momnect-frontend:latest|${{ steps.login-ecr.outputs.registry }}/momnect-frontend:latest|g" Dockerrun.aws.json
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: momnect-frontend
+          environment_name: momnect-frontend-env
+          version_label: github-${{ github.run_id }}
+          region: ap-northeast-2
+          deployment_package: Dockerrun.aws.json
+```
+
+### 배포 과정
+
+1. **코드 푸시**: `main` 브랜치에 코드가 푸시되면 자동으로 배포 시작
+2. **Docker 이미지 빌드**: Next.js 애플리케이션을 Docker 이미지로 빌드
+3. **ECR 푸시**: AWS ECR(Elastic Container Registry)에 이미지 업로드
+4. **Elastic Beanstalk 배포**: ECR의 이미지를 사용하여 EB에 배포
+
+### 로컬 Docker 테스트
 
 ```bash
 # Docker 이미지 빌드
@@ -404,24 +475,19 @@ docker build -t momnect-frontend .
 docker run -p 3000:3000 momnect-frontend
 ```
 
-### AWS Elastic Beanstalk 배포
+### 환경 변수 설정
 
-```bash
-# Dockerrun.aws.json 파일을 사용하여 배포
-eb deploy
-```
+GitHub Secrets에 다음 환경 변수들을 설정해야 합니다:
 
-### 정적 파일 배포
-
-```bash
-# 빌드
-npm run build
-
-# 정적 파일 생성
-npm run export
-
-# dist 폴더를 웹 서버에 업로드
-```
+- `AWS_ACCESS_KEY_ID`: AWS 액세스 키
+- `AWS_SECRET_ACCESS_KEY`: AWS 시크릿 키
+- `NEXT_PUBLIC_WEBSOCKET_URL`: WebSocket 서버 URL
+- `NEXT_PUBLIC_API_BASE_URL`: API 기본 URL
+- `NEXT_PUBLIC_CHAT_API_URL`: 채팅 API URL
+- `NEXT_PUBLIC_USER_API_URL`: 사용자 API URL
+- `NEXT_PUBLIC_PRODUCT_API_URL`: 상품 API URL
+- `NEXT_PUBLIC_REVIEW_API_URL`: 리뷰 API URL
+- `NEXT_PUBLIC_POST_API_URL`: 게시글 API URL
 
 ## 🧪 테스트
 
