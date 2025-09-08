@@ -226,7 +226,7 @@ graph TB
     Gateway --> Chat[Chat Service]
     Gateway --> File[File Service]
 
-    Client --> WebSocket[WebSocket Service]
+    Gateway --> WebSocket[WebSocket Service]
     WebSocket --> Chat
 
     User --> Discovery[Discovery Service]
