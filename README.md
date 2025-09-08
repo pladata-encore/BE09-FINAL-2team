@@ -4,6 +4,43 @@
 
 ## 🚀 프로젝트 개요
 
+### 주제 선정 이유 - 육아맘 중고거래 플랫폼
+
+#### 1. 한정된 육아용품 사용기간과 중고 수요 증가
+
+- 아기용품은 성장 속도에 따라 수개월만 사용하고 금세 필요 없어짐
+- 대부분의 육아용품은 단기간 사용 후 방치되거나 폐기
+- 실제 육아맘들 사이에서 중고거래 수요가 매우 높음 (카페, SNS, 번개장터 등에서 활발히 거래 중)
+
+#### 2. 기존 중고거래 플랫폼의 '육아 특화 기능' 부족
+
+- 번개장터, 당근마켓 등 기존 플랫폼은 연령별 검색, 안전필터, 육아 카테고리 최적화 부족
+- 육아맘들은 "월령별 필터", "추천 월령" 기능을 원함
+- 육아에 특화된 UX/UI 제공의 필요성
+
+#### 3. 경제적 부담 완화 + 친환경 가치 실현
+
+- 육아는 비용 부담이 크고, 특히 첫 출산 가정은 초기 비용이 높음
+- 중고 거래는 가계 부담을 줄일 수 있는 현실적인 대안
+- 재사용(중고 거래)을 통해 자원 낭비를 줄일 수 있음
+
+#### 4. 커뮤니티 기반 신뢰 거래 가능성
+
+- 같은 육아 환경을 공유하는 부모들끼리는 정보 교환 + 정서적 교감 가능
+- 리뷰, 월령 인증, 사용 후기 공유 등을 통해 신뢰 기반의 거래 문화 형성 가능
+
+#### 5. 시장성과 성장 가능성
+
+- 국내 출산율 감소에도 불구하고 육아 관련 1인당 지출은 꾸준히 증가
+- 특히 2030 육아맘 중심의 모바일 기반 육아 커머스/중고거래 시장은 지속 성장 중
+
+#### 기대 효과
+
+- 육아맘들 사이의 신뢰 기반 거래 활성화
+- 육아 비용 절감 + 육아 스트레스 해소
+- 공감 중심의 따뜻한 커뮤니티 형성
+- 친환경적 소비문화 정착 (자원 재사용)
+
 ### 주요 기능
 
 - **사용자 관리**: 회원가입, 로그인, 프로필 관리, 자녀 정보 관리
@@ -93,54 +130,6 @@ BE09-Final-2team/
     └── Jenkinsfile               # CI/CD 파이프라인
 ```
 
-## 🏗️ 시스템 아키텍처
-
-### 마이크로서비스 아키텍처
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Momnect Platform                        │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────────────┐ │
-│  │   Frontend  │    │   Gateway   │    │   Discovery Service │ │
-│  │  (Next.js)  │◄──►│   Service   │◄──►│     (Eureka)        │ │
-│  └─────────────┘    └─────────────┘    └─────────────────────┘ │
-│           │                  │                    │             │
-│           │                  ▼                    │             │
-│           │         ┌─────────────┐               │             │
-│           │         │   Microservices            │             │
-│           │         │                             │             │
-│           │         │  ┌─────────┐ ┌─────────┐   │             │
-│           │         │  │  User   │ │Product  │   │             │
-│           │         │  │Service  │ │Service  │   │             │
-│           │         │  └─────────┘ └─────────┘   │             │
-│           │         │                             │             │
-│           │         │  ┌─────────┐ ┌─────────┐   │             │
-│           │         │  │  Chat   │ │ Review  │   │             │
-│           │         │  │Service  │ │Service  │   │             │
-│           │         │  └─────────┘ └─────────┘   │             │
-│           │         │                             │             │
-│           │         │  ┌─────────┐ ┌─────────┐   │             │
-│           │         │  │  Post   │ │  File   │   │             │
-│           │         │  │Service  │ │Service  │   │             │
-│           │         │  └─────────┘ └─────────┘   │             │
-│           │         └─────────────┘               │             │
-│           │                  │                    │             │
-│           │                  ▼                    │             │
-│           │         ┌─────────────┐               │             │
-│           │         │   Database  │               │             │
-│           │         │                             │             │
-│           │         │  ┌─────────┐ ┌─────────┐   │             │
-│           │         │  │  MySQL  │ │Elastic  │   │             │
-│           │         │  │         │ │ Search  │   │             │
-│           │         │  └─────────┘ └─────────┘   │             │
-│           │         └─────────────┘               │             │
-│           │                                       │             │
-│           └───────────────────────────────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
-```
-
 ## 🛠️ 설치 및 실행
 
 ### 사전 요구사항
@@ -206,10 +195,9 @@ npm run dev
 
 ### 4. 접속 정보
 
-- **Frontend**: http://localhost:3000
-- **Gateway**: http://localhost:8000
-- **Discovery Service**: http://localhost:8761
-- **Swagger UI**: http://localhost:8000/swagger-ui.html
+- **Frontend**: [바로가기](http://momnect-frontend-env.eba-kf25bmmw.ap-northeast-2.elasticbeanstalk.com/)
+- **Gateway**: [바로가기](http://54.180.214.196:30080/)
+- **Discovery Service**: [바로가기](http://54.180.214.196:30061/)
 
 ## 🚀 배포
 
@@ -277,10 +265,12 @@ kubectl apply -f _k8s/ -n momnect
 
 ### API 문서
 
-각 서비스별 Swagger UI를 통해 API 문서를 확인할 수 있습니다:
+링크를 통해 API 문서를 확인할 수 있습니다:
 
-- **Gateway**: http://localhost:8000/swagger-ui.html
-- **개별 서비스**: http://localhost:{port}/swagger-ui.html
+- **API 명세서** : https://www.notion.so/coffit23/API-268a02b1ffb180b5adbdcd124d89d524
+
+### ERD
+- https://www.notion.so/coffit23/ERD-268a02b1ffb18068a406dc429f7c45fa
 
 ### 코드 스타일
 
@@ -289,47 +279,7 @@ kubectl apply -f _k8s/ -n momnect
 - **Database**: JPA/Hibernate, MySQL
 - **Testing**: JUnit 5, Spring Boot Test
 
-### 환경 변수 설정
-
-#### 프론트엔드 환경 변수
-
-```bash
-# .env.local 파일 생성
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_WS_URL=ws://localhost:8006
-NEXT_PUBLIC_FILE_URL=http://localhost:8007
-```
-
-#### 백엔드 환경 변수
-
-```bash
-# .env 파일 생성
-DATABASE_URL=jdbc:mysql://localhost:3306/momnect
-ELASTICSEARCH_URL=http://localhost:9200
-JWT_SECRET=your-jwt-secret
-```
-
-## 📈 모니터링 및 로깅
-
-### 로깅
-
-- **Backend**: SLF4J + Logback
-- **Frontend**: Console logging
-- **Container**: Docker logs
-
-### 모니터링
-
-- **Service Health**: Eureka Dashboard
-- **API Monitoring**: Gateway Logs
-- **Database**: MySQL Workbench
-
-## 🤝 기여 가이드
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+---
 
 ## 📄 라이선스
 
@@ -339,7 +289,7 @@ JWT_SECRET=your-jwt-secret
 
 - **프로젝트명**: Momnect
 - **팀**: BE09-Final-2team
-- **기간**: 2024년
+- **기간**: 2025.07 ~ 2025.09
 - **목표**: 안전하고 신뢰할 수 있는 중고 육아용품 거래 플랫폼 구축
 
 ---
