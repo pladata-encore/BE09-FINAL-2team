@@ -220,7 +220,7 @@ baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 `src/lib/websocketManager.js`에서 WebSocket 연결을 관리합니다:
 
 ```javascript
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8006";
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000";
 ```
 
 ## 📝 개발 가이드
