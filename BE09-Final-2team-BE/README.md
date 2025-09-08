@@ -174,7 +174,7 @@ BE09-Final-2team-BE/
 │   ├── build.gradle
 │   └── Dockerfile
 │
-├── open-ai-service/             # AI 서비스 (선택사항)
+├── open-ai-service/             # AI 서비스 (개발 중)
 │   ├── src/main/java/
 │   │   └── com/momnect/openaiservice/
 │   └── src/main/resources/
@@ -204,13 +204,15 @@ BE09-Final-2team-BE/
 | --------------------- | ---- | ---------------------------- | -------------------- |
 | **Discovery Service** | 8761 | 서비스 디스커버리, 헬스체크  | -                    |
 | **Gateway Service**   | 8000 | API 라우팅, 인증, 로드밸런싱 | -                    |
-| **User Service**      | 8001 | 사용자 관리, 인증, 프로필    | MySQL                |
-| **Product Service**   | 8002 | 상품 CRUD, 검색, 카테고리    | MySQL, Elasticsearch |
-| **Post Service**      | 8003 | 게시판, 댓글, 좋아요         | MySQL                |
-| **Review Service**    | 8004 | 리뷰 작성, 평점 관리         | MySQL                |
-| **Chat Service**      | 8005 | 채팅 메시지 저장, 히스토리   | MySQL                |
-| **WebSocket Service** | 8006 | 실시간 메시징, STOMP         | -                    |
-| **File Service**      | 8007 | 파일 업로드, 이미지 처리     | -                    |
+| **User Service**      | 0\*  | 사용자 관리, 인증, 프로필    | MySQL                |
+| **Product Service**   | 0\*  | 상품 CRUD, 검색, 카테고리    | MySQL, Elasticsearch |
+| **Post Service**      | 0\*  | 게시판, 댓글, 좋아요         | MySQL                |
+| **Review Service**    | 0\*  | 리뷰 작성, 평점 관리         | MySQL                |
+| **Chat Service**      | 0\*  | 채팅 메시지 저장, 히스토리   | MySQL                |
+| **WebSocket Service** | 0\*  | 실시간 메시징, STOMP         | -                    |
+| **File Service**      | 0\*  | 파일 업로드, 이미지 처리     | -                    |
+
+\*포트 0: Eureka를 통한 동적 포트 할당
 
 ### 서비스 간 통신
 
@@ -252,7 +254,7 @@ graph TB
 #### MySQL 설정
 
 ```sql
--- 데이터베이스 생성
+-- 데이터베이스 생성 (환경변수로 설정된 데이터베이스)
 CREATE DATABASE momnect_user;
 CREATE DATABASE momnect_product;
 CREATE DATABASE momnect_post;
@@ -263,6 +265,18 @@ CREATE DATABASE momnect_chat;
 CREATE USER 'momnect'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON momnect_*.* TO 'momnect'@'%';
 FLUSH PRIVILEGES;
+```
+
+**환경변수 설정:**
+
+```bash
+# .env 파일 또는 환경변수로 설정
+DB_URL=jdbc:mysql://localhost:3306/momnect_user
+DB_USER=momnect
+DB_PASS=password
+DEFAULT_ZONE=http://localhost:8761/eureka
+JWT_SECRET=your-jwt-secret-key
+FTP_SERVER_URL=your-ftp-server-url
 ```
 
 #### Elasticsearch 설정
@@ -278,16 +292,26 @@ discovery.type: single-node
 
 ### 2. 환경 변수 설정
 
-각 서비스의 `application.yml`에서 데이터베이스 연결 정보를 설정하세요:
+각 서비스는 환경변수를 통해 데이터베이스 연결 정보를 설정합니다:
 
 ```yaml
+# application.yml 예시 (user-service)
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/momnect_user
-    username: momnect
-    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
 ```
+
+**필수 환경변수:**
+
+- `DB_URL`: 데이터베이스 연결 URL
+- `DB_USER`: 데이터베이스 사용자명
+- `DB_PASS`: 데이터베이스 비밀번호
+- `DEFAULT_ZONE`: Eureka 서버 URL
+- `JWT_SECRET`: JWT 토큰 시크릿 키
+- `FTP_SERVER_URL`: FTP 서버 URL (파일 서비스용)
 
 ### 3. 서비스 실행
 
@@ -325,7 +349,17 @@ docker-compose up -d
 - **Discovery Service**: http://localhost:8761
 - **Gateway Service**: http://localhost:8000
 - **Swagger UI**: http://localhost:8000/swagger-ui.html
-- **각 서비스별 Swagger**: http://localhost:{port}/swagger-ui.html
+- **각 서비스별 Swagger**: Gateway를 통해 접근 (포트는 동적 할당)
+
+**Eureka Dashboard에서 실제 포트 확인:**
+
+- http://localhost:8761 에서 등록된 서비스들의 실제 포트 확인 가능
+
+**Gateway 라우팅 정보:**
+
+- 모든 API 요청은 Gateway(8000)를 통해 라우팅됩니다
+- API 경로: `/api/v1/{service-name}/**`
+- WebSocket: `/ws-stomp/**` (STOMP 프로토콜)
 
 ## 🔧 개발 가이드
 
@@ -593,106 +627,6 @@ pipeline {
 }
 ```
 
-## 📊 모니터링 및 로깅
-
-### 로깅 설정
-
-```yaml
-# application.yml
-logging:
-  level:
-    com.momnect: DEBUG
-    org.springframework.web: INFO
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: logs/momnect.log
-```
-
-### 헬스체크
-
-```java
-@RestController
-public class HealthController {
-
-    @GetMapping("/health")
-    public ResponseEntity<Map<String, String>> health() {
-        Map<String, String> status = new HashMap<>();
-        status.put("status", "UP");
-        status.put("timestamp", LocalDateTime.now().toString());
-        return ResponseEntity.ok(status);
-    }
-}
-```
-
-## 🧪 테스트
-
-### 단위 테스트
-
-```java
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-
-    @Mock
-    private UserRepository userRepository;
-
-    @InjectMocks
-    private UserService userService;
-
-    @Test
-    void 사용자_조회_성공() {
-        // Given
-        Long userId = 1L;
-        User user = User.builder()
-            .id(userId)
-            .email("test@example.com")
-            .name("테스트")
-            .build();
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
-        // When
-        UserResponseDto result = userService.getUser(userId);
-
-        // Then
-        assertThat(result.getId()).isEqualTo(userId);
-        assertThat(result.getEmail()).isEqualTo("test@example.com");
-    }
-}
-```
-
-### 통합 테스트
-
-```java
-@SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestPropertySource(locations = "classpath:application-test.yml")
-class UserControllerIntegrationTest {
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Test
-    void 사용자_생성_성공() {
-        // Given
-        UserRequestDto request = UserRequestDto.builder()
-            .email("test@example.com")
-            .password("password")
-            .name("테스트")
-            .build();
-
-        // When
-        ResponseEntity<UserResponseDto> response = restTemplate.postForEntity(
-            "/api/users", request, UserResponseDto.class);
-
-        // Then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody().getEmail()).isEqualTo("test@example.com");
-    }
-}
-```
-
 ## 🔧 트러블슈팅
 
 ### 자주 발생하는 문제
@@ -716,38 +650,7 @@ class UserControllerIntegrationTest {
    - CORS 설정 확인
    - STOMP 엔드포인트 설정 확인
 
-## 📈 성능 최적화
-
-### 데이터베이스 최적화
-
-```java
-// 페이징 처리
-@Query("SELECT p FROM Product p WHERE p.category = :category")
-Page<Product> findByCategory(@Param("category") String category, Pageable pageable);
-
-// 배치 처리
-@Modifying
-@Query("UPDATE Product p SET p.status = :status WHERE p.id IN :ids")
-int updateProductStatus(@Param("status") ProductStatus status, @Param("ids") List<Long> ids);
-```
-
-### 캐싱
-
-```java
-@Service
-public class ProductService {
-
-    @Cacheable(value = "products", key = "#id")
-    public ProductResponseDto getProduct(Long id) {
-        // 상품 조회 로직
-    }
-
-    @CacheEvict(value = "products", key = "#product.id")
-    public ProductResponseDto updateProduct(ProductRequestDto request) {
-        // 상품 수정 로직
-    }
-}
-```
+---
 
 ## 🔗 관련 링크
 
