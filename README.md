@@ -1,44 +1,132 @@
-# Momnect Frontend
+# 💻 1. 프로젝트 기획서
 
-> **Momnect** 중고 육아용품 거래 플랫폼의 프론트엔드 애플리케이션입니다.
+## 📄 1-1. 프로젝트 개요
 
-Next.js 15와 React 19를 기반으로 한 모던 웹 애플리케이션으로, 사용자 친화적인 인터페이스를 제공합니다.
+- **프로젝트명:** Momnect
+- **진행 기간:**
 
-## 🚀 기술 스택
+  - 2025.07.18 ~ 2025.09.10
 
-### Core Framework
+- **설명:**  
+  👶 육아맘 전용 중고거래 플랫폼
+“육아의 물물교환, 같은 엄마끼리 더 쉽고 따뜻하게”
+‘육아맘 전용 중고거래 플랫폼’은
+영유아 자녀를 둔 부모들이 아기용품, 육아템, 의류, 장난감 등을 월령별로 손쉽게 거래할 수 있도록 설계된 지역 기반의 맞춤형 중고거래 서비스입니다.
 
-- **Framework**: Next.js 15.4.5 (App Router)
-- **UI Library**: React 19.1.0
-- **Language**: JavaScript (ES6+)
-- **Build Tool**: Turbopack (개발 모드)
+## 👨‍💼 1-2. 팀원 구성
 
-### Styling & UI
+| 이주희(팀장)                                                           | 이정아                                                           | 지정호                                                           | 박범석                                                           | 배기열                                                           |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| ![이주희](https://avatars.githubusercontent.com/u/106491547?v=4) | ![이정아](https://avatars.githubusercontent.com/u/106491548?v=4) | ![지정호](https://avatars.githubusercontent.com/u/106491549?v=4) | ![박범석](https://avatars.githubusercontent.com/u/123456789?v=4) | ![배기열](https://avatars.githubusercontent.com/u/106491551?v=4) |
+|유저 서비스 | 상품 서비스 | 채팅 서비스 | 커뮤니티 서비스 | 리뷰 서비스
 
-- **CSS Framework**: Tailwind CSS 4.0
-- **UI Components**: Radix UI (접근성 우선)
-- **Icons**: Lucide React
-- **Animation**: tw-animate-css
+## 📅 1-3. 프로젝트 설명
 
-### State Management & Communication
+본 프로젝트는 MSA 아키텍처 기반의 육아물품 중고거래 플랫폼 프로젝트이다.
+ 육아용품은 사용 기간이 짧아 중고 수요가 꾸준히 발생하며, 실제로 카페·SNS·기존 중고 플랫폼에서 활발히 거래되고 있다.
+• 그러나 기존 플랫폼(번개장터, 당근마켓 등)은 육아 특화 기능(연령별 검색, 추천 월령, 안전 필터 등)이 부족하다.
+• 육아맘들은 월령별 필터와 추천 기능, 육아 전용 UX/UI를 필요로 하다.
+• 같은 육아 환경을 공유하는 부모들 사이에서는 커뮤니티 기반의 신뢰 거래 가능성이 높다.
+• 육아 관련 지출은 증가하는 추세이며, 모바일 기반 육아 커머스·중고거래 시장은 성장 가능성이 크다.
 
-- **State Management**: Zustand 5.0.7
-- **HTTP Client**: Axios 1.11.0
-- **Real-time Communication**:
-  - Socket.io Client 4.8.1
-  - STOMP + SockJS (WebSocket)
-- **Form Handling**: React Hook Form (내장)
+## 🔄 1-4. 목표 및 범위
 
-### Rich Text & Utilities
+• 육아맘 전용 맞춤형 중고거래 플랫폼을 구축
+• 월령별 필터, 추천 상품 등 육아 특화 기능 제공
+• 사용자 및 월령 인증,리뷰, 후기로 신뢰성 높은 거래 문화 조성
+• 육아 정보 공유 커뮤니티 기능을 통해 공감과 소통의 장 형성
+• 중고거래를 통해 육아 비용 절감 및 친환경 소비문화 확산
 
-- **Rich Text Editor**: CKEditor 5
-- **Address API**: React Daum Postcode
-- **Utility Libraries**:
-  - clsx (클래스명 조합)
-  - tailwind-merge (Tailwind 클래스 병합)
-  - class-variance-authority (컴포넌트 변형)
+또한 CI/CD, 클라우드(AWS) 환경에서의 자동화된 배포 파이프라인 구축 등
+개발부터 배포까지 전 과정을 경험하고, 실제 서비스와 유사한 환경을 구축하는 것을 목표로 한다.
 
-## 📁 프로젝트 구조
+## 🔢 1-5. 주요 기능 목록
+
+- **회원가입 및 로그인**
+  : 회원가입/로그인, JWT 인증 적용
+- **상품 판매 및 상품 검색**
+  : FTP 파일 서버를 사용한 상품 등록 및 엘라스틱 서치를 활용한 상품 검색기능 최적화 적용
+- **채팅 서비스**
+  : websocket을 사용한 실시간 통신 및 mongoDB를 사용한 document 형식의 메시지 저장
+- **리뷰 서비스**
+  : open AI를 활용한 긍정/부정 리뷰 요약
+- **커뮤니티 서비스**
+  : 육아꿀팁 / 상품 경매 CRUD
+
+## 📋 1-7. 담당 기능
+
+| 담당자 | 서비스명 (`영문-service`)          | 주요 역할/설명                                                 |
+| ------ | ---------------------------------- | -------------------------------------------------------------- |
+| 김지환 | **AI 요약 (`flaskapi`)**           | Flask API 및 AI 요약 산출물 관리                               |
+| 박준서 | **배포/크롤링/툴팁/추천/중복제거** | 배포 작업, 크롤링, 툴팁, 개인화 추천 로직, 중복제거            |
+| 박창준 | **뉴스/스크랩/신고 서비스**        | 뉴스 서비스, 스크랩 기능, 신고 기능                            |
+| 유지은 | **프론트엔드/뉴스레터/검색/개인화**            | Next.js 기반 프론트엔드 개발, 뉴스레터 서비스, UI/UX 구현, 개인화 뉴스 추천, 검색기능    |
+| 이채희 | **회원/보안/인프라**               | 회원 기능, 보안 및 인프라, Config, Gateway, Discovery, Swagger |
+
+## 🌐 1-8. MSA 식 구조
+
+| 모듈명                   | 기능 역할                                                          | 담당자 |
+| ------------------------ | ------------------------------------------------------------------ | ------ |
+| **`Product Service`**       | 상품 CRUD, 검색, 카테고리 관리                   | 이정아 |
+| **`User Service`**       | 회원가입/로그인, JWT 인증, 마이페이지, 사용자 정보 관리               | 이주희 |
+| **`Post Service`**    | 게시판, 댓글, 좋아요                                 | 박범석 |
+| **`Review Service`** | OpenAI 기반 리뷰 요약, 리뷰 CRUD, 평점 관리                       | 배기열 |
+| **`Chat Service`**    | 채팅 메시지 저장, 히스토리                            | 지정호 |
+| **`WebSocket Service`**      | 실시간 메시징, STOMP                         | 지정호 |
+| **`File Service`**           | 파일 업로드, 이미지 처리                                | 이정아 |
+| **`gateway-service`**    | API Gateway, 라우팅, 인증, 로드밸런싱                              | 이정아 |
+| **`discovery-service`**  | Eureka 서버, 서비스 등록/발견                                      | 이정아 |
+
+---
+
+# 📚 2. Momnect 요구사항 정의서
+https://www.notion.so/coffit23/26aa02b1ffb180289633fb74ec212bd3
+
+# 📌 3. 세부 기능 설명
+
+- [**`MSA 아키텍쳐 설계`**](https://www.notion.so/coffit23/26aa02b1ffb1809bbb9bfc93c103c48a)
+- [**`API 명세서`**](https://www.notion.so/coffit23/API-26aa02b1ffb1800d8020e745a83f9472)
+- [**`UI 테스트 케이스`**](https://www.notion.so/coffit23/UI-26aa02b1ffb1800383dfddfd2780569d)
+- [**`스토리보드`**](https://www.notion.so/coffit23/26aa02b1ffb18032830fff522baa83b6)
+- [**`인터페이스 설계서`**](https://www.notion.so/coffit23/26aa02b1ffb180729e78f56dfbd28ed2)
+- [**`프로젝트 테스트 결과서`**](https://www.notion.so/coffit23/26aa02b1ffb1807c81a4e7a6c5d28e2e)
+- [**`CI/CD 설계서`**](https://www.notion.so/coffit23/CI-CD-26aa02b1ffb180b49038c0af569f6dc3)
+- [**`테스트 결과서`**](https://www.notion.so/coffit23/26aa02b1ffb180f9958dde37ea419b16)
+- [**`테스트 케이스`**](https://www.notion.so/coffit23/26aa02b1ffb180e49fe3ed08ce74cc48)
+- [**`시연 영상`**](https://www.notion.so/coffit23/26aa02b1ffb18078bfeaeb8da4709529)
+
+---
+
+# 🛠 4. 기술 스택
+
+## 🖥️ 4-1. 프론트엔드 기술 스택
+
+| 항목                      | 사용 기술                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **프론트엔드 언어**       | ![JavaScript](https://img.shields.io/badge/JAVASCRIPT-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)                                                                                                                             |
+| **프론트엔드 프레임워크** | ![Next.js](https://img.shields.io/badge/NEXT.JS_15-000000?style=for-the-badge&logo=next.js&logoColor=white) ![React](https://img.shields.io/badge/REACT_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)                               |
+| **스타일링**              | ![Tailwind CSS](https://img.shields.io/badge/TAILWIND_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)                        |
+| **UI 컴포넌트**           | ![Shadcn/ui](https://img.shields.io/badge/SHADCN/UI-000000?style=for-the-badge&logo=shadcn&logoColor=white) ![Lucide React](https://img.shields.io/badge/LUCIDE_ICON-FF6B6B?style=for-the-badge&logo=lucide&logoColor=white)                  |
+| **상태 관리**             | ![Zustand](https://img.shields.io/badge/ZUSTAND-764ABC?style=for-the-badge&logo=zustand&logoColor=white)                                                                                                                                      |
+| **배포**                  | ![GitHub Actions](https://img.shields.io/badge/GITHUB_ACTIONS-2088FF?style=for-the-badge&logo=githubactions&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)              |
+
+## 🔧 4-2. 백엔드 기술 스택
+
+| 항목                  | 사용 기술                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **백엔드 언어**       | ![Java](https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white)                                                                                                                                                                                                                               |
+| **백엔드 프레임워크** | ![Spring](https://img.shields.io/badge/SPRING-6DB33F?style=for-the-badge&logo=spring&logoColor=white) ![Spring Boot](https://img.shields.io/badge/SPRINGBOOT-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) |
+| **데이터베이스**      | ![MySQL](https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![MongoDB](https://img.shields.io/badge/MONGODB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) |                                                                                                                                                                                                                                                                                                                              |
+| **검색/분석**         | ![Elasticsearch](https://img.shields.io/badge/ELASTICSEARCH-005571?style=for-the-badge&logo=elasticsearch&logoColor=white)                                                                                |
+| **AI**             | ![OpenAI](https://img.shields.io/badge/OPENAI-412991?style=for-the-badge&logo=openai&logoColor=white)                                                                                                                      |
+| **협업/버전관리**     | ![GitHub](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white) ![Git](https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white)                                                                                                                                                                                                                                   |
+| **배포/운영**         | ![Docker](https://img.shields.io/badge/DOCKER-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Kubernetes](https://img.shields.io/badge/KUBERNETES-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white) ![Jenkins](https://img.shields.io/badge/JENKINS-D24939?style=for-the-badge&logo=jenkins&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)  |
+
+---
+
+# 🏗️ 5. 프론트엔드 아키텍처 및 구조
+
+## 📁 5-1. 프로젝트 구조
 
 ```
 BE09-Final-2team-FE/
@@ -127,41 +215,9 @@ BE09-Final-2team-FE/
 └── README.md                   # 프로젝트 문서
 ```
 
-## 🛠️ 설치 및 실행
+## 🎯 5-2. 프론트엔드 주요 기능
 
-### 1. 의존성 설치
-
-```bash
-npm install
-```
-
-### 2. 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-### 3. 테스트 로그인 계정
-ID: song
-PW: akasprxm!@
-
-> 💡 **빌드 준비 완료 시 진행**
-
-### 3. 빌드
-
-```bash
-npm run build
-```
-
-### 4. 프로덕션 서버 실행
-
-```bash
-npm start
-```
-
-## 📖 주요 기능
-
-### 1. 사용자 관리
+### 🔐 인증 및 사용자 관리
 
 - **회원가입/로그인**: JWT 기반 인증 시스템
 - **프로필 관리**: 사용자 정보 수정, 프로필 이미지 업로드
@@ -169,7 +225,7 @@ npm start
 - **거래지역 관리**: 거래 가능 지역 설정
 - **회원탈퇴**: 안전한 계정 삭제
 
-### 2. 상품 관리
+### 📰 상품 관련 기능
 
 - **상품 등록/수정**: CKEditor를 활용한 상세 설명
 - **상품 검색**: Elasticsearch 기반 고성능 검색
@@ -177,289 +233,20 @@ npm start
 - **이미지 업로드**: 다중 이미지 업로드 및 관리
 - **상품 상태 관리**: 판매중, 예약중, 판매완료 상태 관리
 
-### 3. 실시간 채팅
+### 📧 채팅 관련 기능
 
 - **WebSocket 통신**: STOMP 프로토콜 기반 실시간 메시징
 - **채팅방 관리**: 상품별 채팅방 생성 및 관리
 - **메시지 히스토리**: 채팅 기록 저장 및 조회
 - **읽음 상태**: 메시지 읽음/안읽음 상태 표시
 
-### 4. 거래 관리
+### 🤖 리뷰 관련 기능
 
-- **거래 요청**: 구매자-판매자 간 거래 요청
-- **거래 상태 추적**: 거래 진행 상황 실시간 업데이트
-- **리뷰 시스템**: 거래 완료 후 후기 작성
-- **평점 관리**: 사용자 신뢰도 평가 시스템
+- **리뷰 요약**: OpenAI 기반 뉴스 요약
+- **리뷰 CRUD**: 구매한 상품에 대한 리뷰 작성/조회/수정/삭제
 
-### 5. 커뮤니티
-
+### 📃게시글 관련 기능
 - **게시판**: 자유게시판, 공지사항 등
 - **게시글 작성**: CKEditor 기반 리치 텍스트 에디터
 - **댓글 시스템**: 게시글 댓글 작성 및 관리
 - **좋아요/북마크**: 관심 게시글 저장
-
-### 6. 공통 기능
-
-- **반응형 디자인**: 모바일, 태블릿, 데스크톱 지원
-- **다크모드**: 사용자 선호에 따른 테마 변경
-- **위시리스트**: 관심 상품 저장 및 관리
-- **알림 시스템**: 실시간 알림 및 알림 히스토리
-
-## 🔧 환경 설정
-
-### API 설정
-
-`src/lib/api.js`에서 API 기본 URL을 설정할 수 있습니다:
-
-```javascript
-baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-```
-
-### WebSocket 설정
-
-`src/lib/websocketManager.js`에서 WebSocket 연결을 관리합니다:
-
-```javascript
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000";
-```
-
-## 📝 개발 가이드
-
-### 1. 새로운 페이지 추가
-
-Next.js App Router를 사용하므로 `src/app/` 디렉토리 아래에 새로운 폴더를 생성하고 `page.jsx` 파일을 추가하세요:
-
-```bash
-src/app/new-page/
-├── page.jsx          # 페이지 컴포넌트
-├── loading.jsx       # 로딩 컴포넌트 (선택사항)
-└── not-found.jsx     # 404 컴포넌트 (선택사항)
-```
-
-### 2. 컴포넌트 추가
-
-- **공통 컴포넌트**: `src/components/common/`
-- **UI 컴포넌트**: `src/components/ui/` (Radix UI 기반)
-
-### 3. 상태 관리 (Zustand)
-
-```javascript
-import { create } from "zustand";
-
-const useStore = create((set) => ({
-  data: [],
-  setData: (data) => set({ data }),
-  clearData: () => set({ data: [] }),
-}));
-
-// 컴포넌트에서 사용
-const { data, setData } = useStore();
-```
-
-### 4. API 호출
-
-`src/lib/api.js`에서 설정된 axios 인스턴스를 사용하세요:
-
-```javascript
-import api from "@/lib/api";
-
-// GET 요청
-const response = await api.get("/api/products");
-
-// POST 요청
-const response = await api.post("/api/products", productData);
-
-// 파일 업로드
-const formData = new FormData();
-formData.append("file", file);
-const response = await api.post("/api/files/upload", formData, {
-  headers: { "Content-Type": "multipart/form-data" },
-});
-```
-
-### 5. WebSocket 연결
-
-```javascript
-import { websocketManager } from "@/lib/websocketManager";
-
-// 연결
-websocketManager.connect();
-
-// 메시지 전송
-websocketManager.sendMessage("/app/chat.send", messageData);
-
-// 메시지 구독
-websocketManager.subscribe("/topic/chat", (message) => {
-  console.log("Received message:", message);
-});
-```
-
-### 6. 모달 사용
-
-```javascript
-import ConfirmModal, { MODAL_TYPES } from "@/components/common/ConfirmModal";
-
-// 모달 상태 관리
-const [modalOpen, setModalOpen] = useState(false);
-const [modalConfig, setModalConfig] = useState({
-  title: "제목",
-  message: "메시지",
-  type: MODAL_TYPES.CONFIRM_CANCEL,
-  onConfirm: () => {
-    // 확인 버튼 클릭 시 실행할 로직
-    setModalOpen(false);
-  },
-  onCancel: () => {
-    // 취소 버튼 클릭 시 실행할 로직
-    setModalOpen(false);
-  },
-});
-```
-
-### 7. CKEditor 사용
-
-```javascript
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-const [content, setContent] = useState("");
-
-<CKEditor
-  editor={ClassicEditor}
-  data={content}
-  onChange={(event, editor) => {
-    const data = editor.getData();
-    setContent(data);
-  }}
-/>;
-```
-
-## 🎨 스타일링
-
-### Tailwind CSS 4.0
-
-프로젝트는 Tailwind CSS 4.0을 사용하여 유틸리티 퍼스트 방식으로 스타일링합니다:
-
-```css
-/* src/app/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 커스텀 스타일 */
-@layer components {
-  .btn-primary {
-    @apply bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded;
-  }
-}
-```
-
-### Radix UI 컴포넌트
-
-접근성을 고려한 UI 컴포넌트를 사용합니다:
-
-```javascript
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-<Button variant="default" size="lg">
-  클릭하세요
-</Button>;
-```
-
-## 📱 반응형 디자인
-
-모든 컴포넌트는 모바일, 태블릿, 데스크톱을 지원하는 반응형으로 설계되었습니다:
-
-```javascript
-// Tailwind CSS 반응형 클래스 사용
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {/* 모바일: 1열, 태블릿: 2열, 데스크톱: 3열 */}
-</div>
-```
-
-## 🚀 배포
-
-### GitHub Actions CI/CD (현재 사용 중)
-
-프로젝트는 GitHub Actions를 통한 자동 배포를 사용합니다:
-
-### 배포 과정
-
-1. **코드 푸시**: `main` 브랜치에 코드가 푸시되면 자동으로 배포 시작
-2. **Docker 이미지 빌드**: Next.js 애플리케이션을 Docker 이미지로 빌드
-3. **ECR 푸시**: AWS ECR(Elastic Container Registry)에 이미지 업로드
-4. **Elastic Beanstalk 배포**: ECR의 이미지를 사용하여 EB에 배포
-
-## 🧪 테스트
-
-### 개발 환경 테스트
-
-```bash
-# 개발 서버 실행
-npm run dev
-
-# 브라우저에서 http://localhost:3000 접속
-```
-
-### 빌드 테스트
-
-```bash
-# 프로덕션 빌드
-npm run build
-
-# 빌드된 애플리케이션 실행
-npm start
-```
-
-## 🔧 트러블슈팅
-
-### 자주 발생하는 문제
-
-1. **API 연결 오류**
-
-   - 백엔드 서버가 실행 중인지 확인
-   - API URL 설정 확인
-
-2. **WebSocket 연결 실패**
-
-   - WebSocket 서버 상태 확인
-   - 네트워크 연결 상태 확인
-
-3. **빌드 오류**
-   - Node.js 버전 확인 (18 이상)
-   - `node_modules` 삭제 후 `npm install` 재실행
-
-## 📊 성능 최적화
-
-### 이미지 최적화
-
-```javascript
-import Image from "next/image";
-
-<Image
-  src="/images/product.jpg"
-  alt="상품 이미지"
-  width={300}
-  height={200}
-  priority // 중요한 이미지에 사용
-/>;
-```
-
-## 🔗 관련 링크
-
-- [Next.js 공식 문서](https://nextjs.org/docs)
-- [React 19 문서](https://react.dev/)
-- [Tailwind CSS 문서](https://tailwindcss.com/docs)
-- [Radix UI 문서](https://www.radix-ui.com/)
-- [Zustand 문서](https://zustand-demo.pmnd.rs/)
-- [CKEditor 5 문서](https://ckeditor.com/docs/ckeditor5/latest/)
-- [Socket.io 문서](https://socket.io/docs/)
-
-## 📄 라이선스
-
-이 프로젝트는 비공개 프로젝트입니다.
-
----
-
-**Momnect Frontend** - 사용자 친화적인 중고 육아용품 거래 플랫폼 🍼👶
