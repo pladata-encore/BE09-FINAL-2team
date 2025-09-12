@@ -251,3 +251,193 @@ BE09-Final-2team-FE/
 - **게시글 작성**: CKEditor 기반 리치 텍스트 에디터
 - **댓글 시스템**: 게시글 댓글 작성 및 관리
 - **좋아요/북마크**: 관심 게시글 저장
+
+# 🏗️ 6. 백엔드 아키텍처 및 구조
+
+## 📁 프로젝트 구조
+
+```
+BE09-Final-2team-BE/
+├── discovery-service/           # 서비스 디스커버리 (Eureka Server)
+│   ├── src/main/java/
+│   │   └── com/momnect/discoveryservice/
+│   │       └── DiscoveryServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── gateway-service/             # API 게이트웨이
+│   ├── src/main/java/
+│   │   └── com/momnect/gatewayservice/
+│   │       ├── config/         # 게이트웨이 설정
+│   │       ├── filter/         # 필터 (JWT, CORS 등)
+│   │       └── GatewayServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── user-service/                # 사용자 관리 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/userservice/
+│   │       ├── controller/     # REST 컨트롤러
+│   │       ├── service/        # 비즈니스 로직
+│   │       ├── repository/     # 데이터 접근 계층
+│   │       ├── entity/         # JPA 엔티티
+│   │       ├── dto/           # 데이터 전송 객체
+│   │       ├── config/        # 설정 클래스
+│   │       ├── security/      # 보안 설정
+│   │       └── UserServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── product-service/             # 상품 관리 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/productservice/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── entity/
+│   │       ├── dto/
+│   │       ├── config/
+│   │       ├── elasticsearch/  # Elasticsearch 설정
+│   │       └── ProductServiceApplication.java
+│   ├── src/main/resources/
+│   │   ├── application.yml
+│   │   └── data.sql           # 초기 데이터
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── post-service/                # 게시판 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/postservice/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── entity/
+│   │       ├── dto/
+│   │       └── PostServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── review-service/              # 리뷰 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/reviewservice/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── entity/
+│   │       ├── dto/
+│   │       └── ReviewServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── chat-service/                # 채팅 메시지 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/chatservice/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── repository/
+│   │       ├── entity/
+│   │       ├── dto/
+│   │       └── ChatServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── websocket-service/           # WebSocket 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/websocketservice/
+│   │       ├── config/        # WebSocket 설정
+│   │       ├── controller/    # STOMP 엔드포인트
+│   │       ├── service/       # 메시지 처리
+│   │       ├── listener/      # 이벤트 리스너
+│   │       └── WebSocketServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── file-service/                # 파일 관리 서비스
+│   ├── src/main/java/
+│   │   └── com/momnect/fileservice/
+│   │       ├── controller/
+│   │       ├── service/
+│   │       ├── config/
+│   │       └── FileServiceApplication.java
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── build.gradle
+│   └── Dockerfile
+│
+├── open-ai-service/             # AI 서비스 (개발 중)
+│   ├── src/main/java/
+│   │   └── com/momnect/openaiservice/
+│   └── src/main/resources/
+│       └── application.yml
+│
+├── _k8s/                        # Kubernetes 배포 설정
+│   ├── discovery-service.yaml
+│   ├── gateway-service.yaml
+│   ├── user-service.yaml
+│   ├── product-service.yaml
+│   ├── post-service.yaml
+│   ├── review-service.yaml
+│   ├── chat-service.yaml
+│   ├── websocket-service.yaml
+│   └── file-service.yaml
+│
+├── Jenkinsfile                  # CI/CD 파이프라인
+├── docker-compose.yml           # 로컬 개발용 Docker Compose
+└── README.md                    # 프로젝트 문서
+```
+
+## 6.1 마이크로서비스 아키텍처
+
+### 서비스별 역할
+
+| 서비스                | 포트 | 주요 기능                    | 데이터베이스         |
+| --------------------- | ---- | ---------------------------- | -------------------- |
+| **Discovery Service** | 8761 | 서비스 디스커버리, 헬스체크  | -                    |
+| **Gateway Service**   | 8000 | API 라우팅, 인증, 로드밸런싱 | -                    |
+| **User Service**      | 0\*  | 사용자 관리, 인증, 프로필    | MySQL                |
+| **Product Service**   | 0\*  | 상품 CRUD, 검색, 카테고리    | MySQL, Elasticsearch |
+| **Post Service**      | 0\*  | 게시판, 댓글, 좋아요         | MySQL                |
+| **Review Service**    | 0\*  | 리뷰 작성, 평점 관리         | MySQL                |
+| **Chat Service**      | 0\*  | 채팅 메시지 저장, 히스토리   | MySQL, mongoDB        |
+| **WebSocket Service** | 0\*  | 실시간 메시징, STOMP         | -                    |
+| **File Service**      | 0\*  | 파일 업로드, 이미지 처리     | -                    |
+
+\*포트 0: Eureka를 통한 동적 포트 할당
+
+### 서비스 간 통신
+
+```mermaid
+graph TB
+    Client[Client] --> Gateway[Gateway Service]
+    Gateway --> User[User Service]
+    Gateway --> Product[Product Service]
+    Gateway --> Post[Post Service]
+    Gateway --> Review[Review Service]
+    Gateway --> Chat[Chat Service]
+    Gateway --> File[File Service]
+    Gateway --> WebSocket[WebSocket Service]
+
+    %% 서비스들은 Discovery에 등록
+    User -->|register| Discovery[Discovery Service]
+    Product -->|register| Discovery
+    Post -->|register| Discovery
+    Review -->|register| Discovery
+    Chat -->|register| Discovery
+    File -->|register| Discovery
+    WebSocket -->|register| Discovery
+    Gateway -->|lookup| Discovery
+```
